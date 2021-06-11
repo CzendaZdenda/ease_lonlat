@@ -36,7 +36,7 @@ If you can test this code on some of the not tested grids, I would appreciate if
 ## USAGE
 
 ```python
-from ease_grids import EASE2GRID, SUPPORTED_GRIDS
+from ease_lonlat import EASE2GRID, SUPPORTED_GRIDS
 
 # define new grid by yourself
 grid = EASE2GRID(name='EASE2_G36km', epsg=6933, x_min=-17367530.45, y_max=7314540.83, res=36032.22, n_cols=964, n_rows=406)
@@ -49,8 +49,8 @@ point_lon = 17.4
 point_lat = 49.4
 
 # row should be 48, col should be 528
-col, row = grid.lonlat2rc(lon=point_lon, lat=point_lat))
+col, row = grid.lonlat2rc(lon=point_lon, lat=point_lat)
 
 # get lon, lat of the center of the pixel
-pixel_center_lon, pixel_center_lat = grid.rc2lonlat(col=col, row=row))
+pixel_center_lon, pixel_center_lat = grid.rc2lonlat(col=col, row=row)
 ```
