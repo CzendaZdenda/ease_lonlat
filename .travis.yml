@@ -2,5 +2,9 @@ language: python
 install:
    - pip install -e .
    - pip install pyproj numpy
+after_success:
+  # report coverage results to coveralls.io
+  - pip install coveralls
+  - coveralls
 script:
   - pytest
