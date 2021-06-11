@@ -2,8 +2,6 @@
 
 This code is inspired by the 'easeconv-0.3' software, the EASE-Grid map transformation utilities Developed and distributed by the National Snow & Ice Data Center (NSIDC), University of Colorado at Boulder. But instead of defining projections and grids "from a scratch", the pyproj library and definition of grids from [NSIDC](https://nsidc.org/ease/ease-grid-projection-gt) have been used.
 
-[![Coverage Status](https://coveralls.io/repos/github/CzendaZdenda/ease_lonlat/badge.svg?branch=main)](https://coveralls.io/github/CzendaZdenda/ease_lonlat?branch=main)
-[![Build Status](https://travis-ci.com/CzendaZdenda/ease_lonlat.svg?branch=main)](https://travis-ci.com/CzendaZdenda/ease_lonlat)
 ---
 
 ## MOTIVATION
