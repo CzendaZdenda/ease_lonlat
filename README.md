@@ -1,4 +1,8 @@
-# Small package to convert given geographic coordinates (longitude, latitude) to EASE(2)-grid coordinates (col, row) and vice versa.
+# ease_lonlat
+[![Build Status](https://travis-ci.com/CzendaZdenda/ease_lonlat.svg?branch=main)](https://travis-ci.com/CzendaZdenda/ease_lonlat) 
+[![Coverage Status](https://coveralls.io/repos/github/CzendaZdenda/ease_lonlat/badge.svg?branch=main)](https://coveralls.io/github/CzendaZdenda/ease_lonlat?branch=main)
+
+Small package to convert given geographic coordinates (longitude, latitude) to EASE(2)-grid coordinates (col, row) and vice versa.
 
 This code is inspired by the 'easeconv-0.3' software, the EASE-Grid map transformation utilities Developed and distributed by the National Snow & Ice Data Center (NSIDC), University of Colorado at Boulder. But instead of defining projections and grids "from a scratch", the pyproj library and definition of grids from [NSIDC](https://nsidc.org/ease/ease-grid-projection-gt) have been used.
 
