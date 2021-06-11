@@ -1,6 +1,5 @@
 # ease_lonlat
 [![Build Status](https://travis-ci.com/CzendaZdenda/ease_lonlat.svg?branch=main)](https://travis-ci.com/CzendaZdenda/ease_lonlat) 
-[![Coverage Status](https://coveralls.io/repos/github/CzendaZdenda/ease_lonlat/badge.svg?branch=main)](https://coveralls.io/github/CzendaZdenda/ease_lonlat?branch=main)
 
 Small package to convert given geographic coordinates (longitude, latitude) to EASE(2)-grid coordinates (col, row) and vice versa.
 
