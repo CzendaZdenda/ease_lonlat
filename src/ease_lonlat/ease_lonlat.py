@@ -216,10 +216,10 @@ class EASE2GRID:
         assert (lon >= -180.) & (lon <= 180.), f'longitude in {self.name} grid should be between -180 and 180'
 
         if self.epsg in [6933, 3410]:
-            assert (lat >= -90.) & (lon <= 90.), f'latitude in {self.name} grid should be between -90 and 90'
+            assert (lat >= -90.) & (lat <= 90.), f'latitude in {self.name} grid should be between -90 and 90'
         elif self.epsg in [6931, 3408]:
-            assert (lat >= 0.) & (lon <= 90.), f'latitude in {self.name} grid should be between 0 and 90'
+            assert (lat >= 0.) & (lat <= 90.), f'latitude in {self.name} grid should be between 0 and 90'
         elif self.epsg in [6932, 3409]:
-            assert (lat >= -90.) & (lon <= 0.), f'latitude in {self.name} grid should be between -90 and 0'
+            assert (lat >= -90.) & (lat <= 0.), f'latitude in {self.name} grid should be between -90 and 0'
 
         return lon, lat
