@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="ease_lonlat",
-    version="0.0.3",
+    version="0.0.3.5",
     author="Zdenek Ruzicka",
     author_email="tramtara@seznam.cz",
     description="To convert between LON, LAT coordinates and EASE(2) grid ROW, COL.",
