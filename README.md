@@ -3,7 +3,7 @@
 
 Small package to convert given geographic coordinates (longitude, latitude) to EASE(2)-grid coordinates (col, row) and vice versa.
 
-This code is inspired by the 'easeconv-0.3' software, the EASE-Grid map transformation utilities Developed and distributed by the National Snow & Ice Data Center (NSIDC), University of Colorado at Boulder. But instead of defining projections and grids "from a scratch", the pyproj library and definition of grids from [NSIDC](https://nsidc.org/ease/ease-grid-projection-gt) have been used.
+This code is inspired by the 'easeconv-0.3' software, the EASE-Grid map transformation utilities Developed and distributed by the National Snow & Ice Data Center (NSIDC), University of Colorado at Boulder. But instead of defining projections and grids "from a scratch", the pyproj library and definition of grids from [NSIDC](https://nsidc.org/data/user-resources/help-center/guide-ease-grids) have been used.
 
 ---
 
