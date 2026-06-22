@@ -56,3 +56,7 @@ col, row = grid.lonlat2rc(lon=point_lon, lat=point_lat)
 # get lon, lat of the center of the pixel
 pixel_center_lon, pixel_center_lat = grid.rc2lonlat(col=col, row=row)
 ```
+
+## TODO
+- [ ] Generate grid for given region (by lat/lon min/max)
+- [ ] Add documentation
