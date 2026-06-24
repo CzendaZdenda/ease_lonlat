@@ -145,6 +145,23 @@ class TestEASE2North:
         nptest.assert_almost_equal(pixel_center_lat, pixel_lat, decimal=4, err_msg='Latitude coordinate does not match')
 
 
+    def test_ease2_north_9km_rc2coords(self):
+        # define column and row coordinates
+        col = 871
+        row = 782
+
+        # should get this x and y
+        pixel_x = -1156500.0
+        pixel_y = 1957500.0
+
+        # define new grid - Global Projection with 36 km pixel resolution
+        grid = EASE2GRID(name='EASE2_N9km', **SUPPORTED_GRIDS['EASE2_N9km'])
+
+        pixel_center_x, pixel_center_y = grid.rc2coords(col=col, row=row)
+        nptest.assert_almost_equal(pixel_center_x, pixel_x, decimal=0,err_msg='X coordinate does not match')
+        nptest.assert_almost_equal(pixel_center_y, pixel_y, decimal=0, err_msg='Y coordinate does not match')
+
+
 class TestEASE2South:
     def test_ease2_south_9km_lonlat2rc(self):
         # define longitude and latitude
@@ -205,7 +222,7 @@ class TestEASE2NortMass:
 
 
     # Test input as np.array of integers
-    def test_ease2_north_9km_rc2lonlat_array_input(self):
+    def test_ease2_north_9km_rc2lonlat_numpy_array_input(self):
         # define row and column identification
         cols = np.array([1252, 1252, 1252, 1253, 1253, 1253])
         rows = np.array([1013, 1014, 1015, 1013, 1014, 1015])
@@ -225,7 +242,7 @@ class TestEASE2NortMass:
                                    err_msg='Latitude coordinate does not match')
 
 
-    def test_ease2_northl_9km_lonlat2rc_mass(self):
+    def test_ease2_northl_9km_lonlat2rc_list_input(self):
         # define longitude and latitude
         points_lon = [-149.4252, -149.3976, 88.86362]
         points_lat = [69.5271, 69.4234, 69.23479]
@@ -241,3 +258,55 @@ class TestEASE2NortMass:
 
         assert cols == new_cols, 'Column coordinate does not match'
         assert rows == new_rows, 'Row coordinate does not match'
+
+
+    def test_ease2_northl_9km_lonlat2rc_numpy_array_input(self):
+        # define longitude and latitude
+        points_lon = np.array([-149.4252, -149.3976, 88.86362])
+        points_lat = np.array([69.5271, 69.4234, 69.23479])
+
+        # should get this row and column coordinates
+        cols = [871, 870, 1256]
+        rows = [782, 781, 1005]
+
+        # define new grid - Global Projection with 36 km pixel resolution
+        grid = EASE2GRID(name='EASE2_N9km', **SUPPORTED_GRIDS['EASE2_N9km'])
+
+        new_cols, new_rows = grid.lonlat2rc(lon=points_lon, lat=points_lat)
+
+        assert np.all(cols == new_cols), 'Column coordinate does not match'
+        assert np.all(rows == new_rows), 'Row coordinate does not match'
+
+
+    def test_ease2_north_9km_rc2coords_list_input(self):
+        # define column and row coordinates
+        col = [871, 865, 1253]
+        row = [782, 791, 1014]
+
+        # should get this x and y
+        pixel_x = [-1156500.0, -1210500.0, 2281500.0]
+        pixel_y = [1957500.0, 1876500.0, -130500.0]
+
+        # define new grid - Global Projection with 36 km pixel resolution
+        grid = EASE2GRID(name='EASE2_N9km', **SUPPORTED_GRIDS['EASE2_N9km'])
+
+        pixel_center_x, pixel_center_y = grid.rc2coords(col=col, row=row)
+        nptest.assert_almost_equal(pixel_center_x, pixel_x, decimal=2,err_msg='X coordinate does not match')
+        nptest.assert_almost_equal(pixel_center_y, pixel_y, decimal=2, err_msg='Y coordinate does not match')
+
+
+    def test_ease2_north_9km_rc2coords_numpy_array_input(self):
+        # define column and row coordinates
+        col = np.array([871, 865, 1253])
+        row = np.array([782, 791, 1014])
+
+        # should get this x and y
+        pixel_x = [-1156500.0, -1210500.0, 2281500.0]
+        pixel_y = [1957500.0, 1876500.0, -130500.0]
+
+        # define new grid - Global Projection with 36 km pixel resolution
+        grid = EASE2GRID(name='EASE2_N9km', **SUPPORTED_GRIDS['EASE2_N9km'])
+
+        pixel_center_x, pixel_center_y = grid.rc2coords(col=col, row=row)
+        nptest.assert_almost_equal(pixel_center_x, pixel_x, decimal=2,err_msg='Longitude coordinate does not match')
+        nptest.assert_almost_equal(pixel_center_y, pixel_y, decimal=2, err_msg='Latitude coordinate does not match')

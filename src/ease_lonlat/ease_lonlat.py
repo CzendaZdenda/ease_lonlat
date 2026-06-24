@@ -216,22 +216,15 @@ class EASE2GRID:
         :return:        lon, lat
         :rtype:         float, float
         """
-        # convert col and row to numpy arrays for vectorized math
-        col_array = np.atleast_1d(col)
-        row_array = np.atleast_1d(row)
-
-        # calculate x, y coordinates (handles scalars, lists, and arrays)
-        x = self.x_min + col_array * self.res + self.res / 2
-        y = self.y_max - row_array * self.res - self.res / 2
-
+        # get x, y coordinates (handles scalars, lists, and arrays)
+        x, y = self.rc2coords(col, row)
         lon, lat = self.proj(x, y, inverse=True)
 
         # convert back to scalars if the original input was a single integer
         if np.isscalar(col) and np.isscalar(row):
-            lon, lat = float(lon[0]), float(lat[0])
+            lon, lat = float(lon), float(lat)
 
         # check max and min longitude (latitude) values
-        # assert (lon >= -180.) & (lon <= 180.), f'longitude in {self.name} grid should be between -180 and 180'
         assert np.all((lon >= -180.) & (lon <= 180.)), f'longitude in {self.name} grid should be between -180 and 180'
 
         if self.epsg in [6933, 3410]:
@@ -242,3 +235,39 @@ class EASE2GRID:
             assert np.all((lat >= -90.) & (lat <= 0.)), f'latitude in {self.name} grid should be between -90 and 0'
 
         return lon, lat
+
+
+    def rc2coords(self, col, row):
+        """ Convert given EASE-grid 2.0 column and row ids to metric coordinates (x, y) - center of
+        pixel/cell.
+
+        Parameters 'col' and 'row' could be integers, lists of integers or numpy arrays.
+
+        :param col:     Column
+        :type col:      int, list(int), np.array
+
+        :param row:     Row
+        :type row:      int, list(int), np.array
+
+        :return:        x, y (in EASE-grid 2.0 coordinates)
+        :rtype:         float, float
+        """
+        # convert col and row to numpy arrays for vectorized math
+        col_array = np.atleast_1d(col)
+        row_array = np.atleast_1d(row)
+
+        # calculate x, y coordinates (handles scalars, lists, and arrays)
+        x = self.x_min + col_array * self.res + self.res / 2
+        y = self.y_max - row_array * self.res - self.res / 2
+
+        # convert back to scalars if the original input was a single integer
+        if np.isscalar(col) and np.isscalar(row):
+            x, y = float(x[0]), float(y[0])
+
+        # check max and min values
+        assert np.all((x >= self.x_min) & (x <= -self.x_min)), \
+            f'x ({x}) in {self.name} grid should be between {self.x_min} and {-self.x_min}'
+        assert np.all((y >= -self.y_max) & (y <= self.y_max)), \
+            f'y ({y}) in {self.name} grid should be between {-self.y_max} and {self.y_max}'
+
+        return x, y
