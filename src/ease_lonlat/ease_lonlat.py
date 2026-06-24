@@ -54,6 +54,8 @@
         [1] https://nsidc.org/ease/ease-grid-projection-gt
 """
 import pyproj
+import numpy as np
+
 
 SUPPORTED_GRIDS = {'EASE2_G1km': {'epsg': 6933, 'x_min': -17367530.45, 'y_max': 7314540.83, 'res': 1000.90,
                                   'n_cols': 34704, 'n_rows': 14616},
@@ -175,21 +177,27 @@ class EASE2GRID:
         """ Convert given geographic coordinates (longitude, latitude) to EASE-grid 2.0 coordinates (col, row).
 
         :param lon:     Longitude
-        :type lon:      float
+        :type lon:      float | list(float) | np.array(float)
 
         :param lat:     Longitude
-        :type lat:      float
+        :type lat:      float | list(float) | np.array(float)
 
         :return:        col, row
-        :rtype:         int, int
+        :rtype:         int, int | list(int), list(int) | np.array(float), np.array(float)
         """
         x, y = self.proj(lon, lat)
-        col = int(abs(x - self.x_min) / self.res)
-        row = int(abs(y - self.y_max) / self.res)
+
+        col = (np.abs(np.array(x) - self.x_min) / self.res).astype(int)
+        row = (np.abs(np.array(y) - self.y_max) / self.res).astype(int)
 
         # check max and min row (col) values
-        assert col <= self.n_cols, f'col-coordinate in {self.name} grid should be less then {self.n_cols}'
-        assert row <= self.n_rows, f'row-coordinate in {self.name} grid should be less then {self.n_rows}'
+        assert np.all(col <= self.n_cols), f'col-coordinate in {self.name} grid should be less then {self.n_cols}'
+        assert np.all(row <= self.n_rows), f'row-coordinate in {self.name} grid should be less then {self.n_rows}'
+
+        if isinstance(lon, float) and isinstance(lat, float):
+            col, row = col.astype(float), row.astype(float)
+        elif isinstance(lon, list) and isinstance(lat, list):
+            col, row = col.tolist(), row.tolist()
 
         return col, row
 
@@ -197,29 +205,40 @@ class EASE2GRID:
         """ Convert given EASE-grid 2.0 coordinates (col, row) to geographic coordinates (longitude, latitude) - center of
         pixel.
 
+        Parameters 'col' and 'row' could be integers, lists of integers or numpy arrays.
+
         :param col:     Column
-        :type col:      int
+        :type col:      int, list(int), np.array
 
         :param row:     Row
-        :type row:      int
+        :type row:      int, list(int), np.array
 
         :return:        lon, lat
         :rtype:         float, float
         """
-        # calculate x, y coordinates
-        x = self.x_min + col * self.res + self.res / 2
-        y = self.y_max - row * self.res - self.res / 2
+        # convert col and row to numpy arrays for vectorized math
+        col_array = np.atleast_1d(col)
+        row_array = np.atleast_1d(row)
+
+        # calculate x, y coordinates (handles scalars, lists, and arrays)
+        x = self.x_min + col_array * self.res + self.res / 2
+        y = self.y_max - row_array * self.res - self.res / 2
 
         lon, lat = self.proj(x, y, inverse=True)
 
+        # convert back to scalars if the original input was a single integer
+        if np.isscalar(col) and np.isscalar(row):
+            lon, lat = float(lon[0]), float(lat[0])
+
         # check max and min longitude (latitude) values
-        assert (lon >= -180.) & (lon <= 180.), f'longitude in {self.name} grid should be between -180 and 180'
+        # assert (lon >= -180.) & (lon <= 180.), f'longitude in {self.name} grid should be between -180 and 180'
+        assert np.all((lon >= -180.) & (lon <= 180.)), f'longitude in {self.name} grid should be between -180 and 180'
 
         if self.epsg in [6933, 3410]:
-            assert (lat >= -90.) & (lat <= 90.), f'latitude in {self.name} grid should be between -90 and 90'
+            assert np.all((lat >= -90.) & (lat <= 90.)), f'latitude in {self.name} grid should be between -90 and 90'
         elif self.epsg in [6931, 3408]:
-            assert (lat >= 0.) & (lat <= 90.), f'latitude in {self.name} grid should be between 0 and 90'
+            assert np.all((lat >= 0.) & (lat <= 90.)), f'latitude in {self.name} grid should be between 0 and 90'
         elif self.epsg in [6932, 3409]:
-            assert (lat >= -90.) & (lat <= 0.), f'latitude in {self.name} grid should be between -90 and 0'
+            assert np.all((lat >= -90.) & (lat <= 0.)), f'latitude in {self.name} grid should be between -90 and 0'
 
         return lon, lat
