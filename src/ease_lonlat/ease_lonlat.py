@@ -4,7 +4,7 @@
     defining projections and grids "from a scratch", the pyproj library and definition of grids from NSIDC [1] have
     been used.
 
-    Works for EASE-Grid 2.0, should works also for EASE-Grid.
+    Works for EASE-Grid 2.0, should work also for EASE-Grid.
 
     MOTIVATION
         Get SMOS (CATDS, 25km, global projection) row and col coordinates corresponding to the pixel of EASE2 grid with
